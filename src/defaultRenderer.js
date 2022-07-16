@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const defaultRenderer = (tag, size, color) => {
+const defaultRenderer = (tag, size, color) => {
   const { className, style, ...props } = tag.props || {}
   const fontSize = size + 'px'
   const key = tag.key || tag.value
@@ -17,6 +17,8 @@ export const defaultRenderer = (tag, size, color) => {
     </span>
   )
 }
+
+export default defaultRenderer
 
 const styles = {
   margin: '0px 3px',

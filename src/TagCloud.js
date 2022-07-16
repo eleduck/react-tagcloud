@@ -4,7 +4,8 @@ import arrayShuffle from 'shuffle-array'
 import randomColor from 'randomcolor'
 import seedrandom from 'seedrandom'
 
-import { defaultRenderer } from './defaultRenderer'
+import defaultRenderer from './defaultRenderer'
+import defaultContainerRenderer from './defaultContainerRenderer'
 import { fontSizeConverter, keys, omit, pick } from './helpers'
 
 const handlersPropNames = [
@@ -13,11 +14,13 @@ const handlersPropNames = [
   'onMouseMove',
   'onMouseOver',
   'onMouseOut',
+  'onPress',
 ]
 const cloudPropNames = [
   'tags',
   'shuffle',
   'renderer',
+  'containerRenderer',
   'maxSize',
   'minSize',
   'colorOptions',
@@ -93,7 +96,10 @@ export function TagCloud(props) {
     tagsComparison,
   ])
   const other = omit(props, [...cloudPropNames, ...handlersPropNames])
-  return <div {...other}>{renderTags(props, data)}</div>
+  return props.containerRenderer({
+    ...other,
+    children: renderTags(props, data),
+  })
 }
 
 TagCloud.propTypes = {
@@ -104,6 +110,7 @@ TagCloud.propTypes = {
   colorOptions: PropTypes.object,
   disableRandomColor: PropTypes.bool,
   renderer: PropTypes.func,
+  containerRenderer: PropTypes.func,
   className: PropTypes.string,
   randomSeed: PropTypes.any,
   randomNumberGenerator: PropTypes.func,
@@ -111,6 +118,7 @@ TagCloud.propTypes = {
 
 TagCloud.defaultProps = {
   renderer: defaultRenderer,
+  containerRenderer: defaultContainerRenderer,
   shuffle: true,
   className: 'tag-cloud',
   colorOptions: {},
